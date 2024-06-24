@@ -10,11 +10,28 @@ import numpy as np
 from . import PyRecast as rd
 
 
-
 class Navmesh:
     '''
     Python class to interface with navmesh.
     '''
+
+    # Define the default settings in a dict
+    default_settings = {
+        "cellSize": 0.3,
+        "cellHeight": 0.2,
+        "agentHeight": 2.0,
+        "agentRadius": 0.6,
+        "agentMaxClimb": 0.9,
+        "agentMaxSlope": 45.0,
+        "regionMinSize": 8,
+        "regionMergeSize": 20,
+        "edgeMaxLen": 12.0,
+        "edgeMaxError": 1.3,
+        "vertsPerPoly": 6,
+        "detailSampleDist": 6.0,
+        "detailSampleMaxError": 1.0,
+        "partitionType": 0
+    }
 
     def __init__(self) -> None:
         ''' 
@@ -76,36 +93,18 @@ class Navmesh:
                 - "regionMergeSize" (int): The size threshold for merging regions.
                 - "edgeMaxLen" (float): The maximum allowed length for an edge.
                 - "edgeMaxError" (float): The maximum allowed error for an edge.
-                - "vertsPerPoly" (float): The maximum number of vertices per polygon.
+                - "vertsPerPoly" (int): The maximum number of vertices per polygon.
                 - "detailSampleDist" (float): The distance between detail samples.
                 - "detailSampleMaxError" (float): The maximum allowed error for detail samples.
                 - "partitionType" (int): The partition type for the navmesh.
 
                 Default settings will be used if a key is not provided in the settings dictionary.
         '''
-
-        # Define the default settings in a dict
-        default_settings = {
-            "cellSize": 0.3,
-            "cellHeight": 0.2,
-            "agentHeight": 2.0,
-            "agentRadius": 0.6,
-            "agentMaxClimb": 0.9,
-            "agentMaxSlope": 45.0,
-            "regionMinSize": 8,
-            "regionMergeSize": 20,
-            "edgeMaxLen": 12.0,
-            "edgeMaxError": 1.3,
-            "vertsPerPoly": 6.0,
-            "detailSampleDist": 6.0,
-            "detailSampleMaxError": 1.0,
-            "partitionType": 0
-        }
         
         # Overriding the default settings with the user provided settings
-        default_settings.update(settings)
+        self.default_settings.update(settings)
     
-        self._navmesh.build_navmesh(default_settings)
+        self._navmesh.build_navmesh(self.default_settings)
 
     def get_navmesh_raw_contours(self) -> Tuple[List[float], List[int], List[int]]:
         '''
