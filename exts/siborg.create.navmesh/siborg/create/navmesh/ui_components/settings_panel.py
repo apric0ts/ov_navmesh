@@ -45,7 +45,7 @@ class SettingsPanel:
         # Define custom settings in a dict, with default values equal to the default settings
         self.custom_settings : Dict[str, int | float] = self.default_settings.copy()
 
-        self.slider_value_model_list = [] # List of tuples (model, type) where type is either "int" or "float"
+        self.slider_value_model_list : List[ui.AbstractValueModel] = [] # List of tuples (model, type) where type is either "int" or "float"
 
         def use_default_settings():
             self.custom_settings = self.default_settings.copy()
