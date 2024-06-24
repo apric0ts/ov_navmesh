@@ -1,20 +1,13 @@
 import omni.ui as ui
-# from ..pyrecast import build_navmesh
-
-import carb
-
-
+from typing import List, Dict, Tuple, Any
 
 class SettingsPanel:
-
-
     def __init__(self):
-        
         print("Settings Panel started")
         
         self._window = ui.Window("Navmesh Settings", width=500, height=600, position_x = 1000, position_y = 100)    
         # Define the default settings in a dict
-        self.default_settings = {
+        self.default_settings : Dict[str, int | float] = {
             "cellSize": 0.3,
             "cellHeight": 0.2,
             "agentHeight": 2.0,
@@ -31,10 +24,8 @@ class SettingsPanel:
             "partitionType": 0
         }
 
-
-
         # Define bounds for custom settings sliders
-        self.settings_bounds = {
+        self.settings_bounds : Dict[str, Tuple[int | float, int | float, str]]= {
             "cellSize": (0.01, 0.6, "float"),
             "cellHeight": (0.1, 0.3, "float"),
             "agentHeight": (1.0, 3.0, "float"),
@@ -52,7 +43,7 @@ class SettingsPanel:
         }
 
         # Define custom settings in a dict, with default values equal to the default settings
-        self.custom_settings = self.default_settings.copy()
+        self.custom_settings : Dict[str, int | float] = self.default_settings.copy()
 
         self.slider_value_model_list = [] # List of tuples (model, type) where type is either "int" or "float"
 
@@ -72,12 +63,7 @@ class SettingsPanel:
                 elif t == "float":
                     self.custom_settings[key] = model.get_value_as_float()
             print("Custom settings updated")
-
-        def get_custom_settings():
-            print("Custom settings retrieved")
-            return self.custom_settings
-
-        
+    
         with self._window.frame:
 
             with ui.VStack():
@@ -99,8 +85,6 @@ class SettingsPanel:
                                                   step=step_size, 
                                                   default = self.default_settings[key])
                             self.slider_value_model_list.append((int_model, key, "int"))
-                            
-
                         elif bounds[2] == "float":
                             float_model = ui.SimpleFloatModel(self.default_settings[key], min=min_bound, max=max_bound)
                             slider = ui.FloatSlider(float_model, width=150, min=min_bound, max=max_bound, step=step_size)
