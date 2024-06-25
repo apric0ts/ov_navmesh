@@ -4,6 +4,7 @@ from pxr import Gf
 
 from .. import core
 from .. import usd_utils
+from .. import manager
 
 import numpy as np
 
@@ -47,6 +48,10 @@ class NavmeshPanel:
                     if self.navmesh.get_selected_prim():
                         self.assign_btn.style = s_done
                         self.bld_btn.style = s_yellow
+                    
+                    # Update reference to navmesh in Manager
+                    nav_manager = manager.Manager()
+                    nav_manager.update_navmesh_ref(self.navmesh)
 
                 def build_navmesh():
                     # build the navmesh
@@ -66,14 +71,22 @@ class NavmeshPanel:
                         return
                     pnts = self.navmesh.get_random_points(10)
 
+                    for pt in pnts:
+                        print(pt)
+
                     # plot points
                     usd_utils.create_geompoints(pnts)
 
                 def get_path():
                     # get sample path
-                    s,e = self.navmesh.get_random_points(2)
+                    # s,e = self.navmesh.get_random_points(2)
+                    s = [2, 7.69999981, 2]
+                    e = [0, 7.7, 0]
 
                     path_pnts = self.navmesh.find_paths([s], [e])
+                    print(s)
+                    print(e)
+                    print(path_pnts)
                     path_pnts = np.asarray(path_pnts).reshape(-1, 3)
 
                     # plot the path
