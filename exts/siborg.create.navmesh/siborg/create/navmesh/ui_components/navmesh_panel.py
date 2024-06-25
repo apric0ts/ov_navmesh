@@ -79,14 +79,9 @@ class NavmeshPanel:
 
                 def get_path():
                     # get sample path
-                    # s,e = self.navmesh.get_random_points(2)
-                    s = [2, 7.69999981, 2]
-                    e = [0, 7.7, 0]
+                    s,e = self.navmesh.get_random_points(2)
 
                     path_pnts = self.navmesh.find_paths([s], [e])
-                    print(s)
-                    print(e)
-                    print(path_pnts)
                     path_pnts = np.asarray(path_pnts).reshape(-1, 3)
 
                     # plot the path
